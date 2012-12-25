@@ -1,5 +1,5 @@
-# Rails Switcher for Sublime Text 2
-Rails Switcher is a plugin for Sublime Text 2 that allows you to switch between Models, Controllers and Views. And how!
+# Rails File Switcher for Sublime Text 2
+Rails File Switcher is a plugin for Sublime Text 2 that allows you to switch between Models, Controllers and Views. And how!
 
 No popups, just immediately switches to the related file.
 
@@ -18,5 +18,9 @@ Here's how you can bind them to keys (Go to `Preferences > Key Bindings - User`)
 { "keys": ["super+2"], "command": "open_related_rails_controller" },
 { "keys": ["super+3"], "command": "open_related_rails_view" },
 ```
+
+## How is it different from [SublimeText2RailsRelatedFiles](https://github.com/luqman/SublimeText2RailsRelatedFiles)?
+`Rails Related Files` shows you a list of related files which you can choose from.
+`Rails File Swticher` switches between MVC files instantly. If you are in your User model and you press ⌘+2 (if that's your binding), you will instantly see UsersController.
 
 This is the alpha version, if something is not working, create an issue.
