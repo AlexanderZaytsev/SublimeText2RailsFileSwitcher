@@ -4,7 +4,6 @@
 # See the end of this file for the free software, open source license (BSD-style).
 
 from languages.english import English
-from languages.spanish import Spanish
 
 class Inflector(object):
     """
