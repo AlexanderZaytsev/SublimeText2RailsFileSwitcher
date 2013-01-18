@@ -108,30 +108,39 @@ class RailsSwitcherCommandBase(sublime_plugin.WindowCommand):
       print file + " not found"
       return False
 
-
-
   def base_file_name(self, file_path):
     return os.path.splitext(os.path.basename(file_path))[0]
 
+  def rails_root_directory_from_active_window(self):
+    directories = sublime.active_window().folders()
+    file = sublime.active_window().active_view().file_name()
+
+    for directory in directories:
+      if directory in file and os.path.exists(os.path.join(directory, 'Rakefile')):
+        return os.path.abspath(directory)
+
+    return None
+
   def setup(self):
-    self.rails_root_directory = sublime.active_window().folders()[0]
+    self.rails_root_directory = self.rails_root_directory_from_active_window()
     self.current_file_path = sublime.active_window().active_view().file_name()
 
+    return True if self.rails_root_directory else False
 
 class OpenRelatedRailsControllerCommand(RailsSwitcherCommandBase):
   def run(self):
-    self.setup()
-    related_controller = self.related_controller(self.current_file_path)
-    self.open_related_file(related_controller)
+    if self.setup():
+      related_controller = self.related_controller(self.current_file_path)
+      self.open_related_file(related_controller)
 
 class OpenRelatedRailsModelCommand(RailsSwitcherCommandBase):
   def run(self):
-    self.setup()
-    related_model = self.related_model(self.current_file_path)
-    self.open_related_file(related_model)
+    if self.setup():
+      related_model = self.related_model(self.current_file_path)
+      self.open_related_file(related_model)
 
 class OpenRelatedRailsViewCommand(RailsSwitcherCommandBase):
   def run(self):
-    self.setup()
-    related_view = self.related_view(self.current_file_path)
-    self.open_related_file(related_view)
+    if self.setup():
+      related_view = self.related_view(self.current_file_path)
+      self.open_related_file(related_view)
