@@ -25,3 +25,11 @@ Here's how you can bind them to keys (Go to `Preferences > Key Bindings - User`)
 `Rails File Switcher` switches between MVC files instantly. If you are in your User model and you press ⌘+2 (if that's your binding), you will instantly see UsersController.
 
 This is the alpha version, if something is not working, create an issue.
+
+## CHANGELOG
+
+### January 18, 2013
+- Make it work when there are multiple apps opened in the side bar (previously would look for files only in the first app). Thanks to @ccodre for pointing out.
+
+### Dec 25, 2013
+- Initial release
