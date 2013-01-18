@@ -31,5 +31,5 @@ This is the alpha version, if something is not working, create an issue.
 ### January 18, 2013
 - Make it work when there are multiple apps opened in the side bar (previously would look for files only in the first app). Thanks to @ccodre for pointing out.
 
-### Dec 25, 2013
+### Dec 25, 2012
 - Initial release
