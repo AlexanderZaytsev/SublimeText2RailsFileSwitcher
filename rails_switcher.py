@@ -1,16 +1,6 @@
 import sublime, sublime_plugin, os, glob, re
 from lib.inflector import *
 
-def rails_root(directory):
-  while directory:
-    if os.path.exists(os.path.join(directory, 'Rakefile')):
-      return directory
-    parent = os.path.realpath(os.path.join(directory, os.path.pardir))
-    if parent == directory:
-      return False
-    directory = parent
-  return False
-
 class RailsSwitcherCommandBase(sublime_plugin.WindowCommand):
   VIEWS_DIR = os.path.join('app', 'views')
   CONTROLLERS_DIR = os.path.join('app', 'controllers')
