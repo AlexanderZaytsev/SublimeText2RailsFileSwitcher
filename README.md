@@ -5,7 +5,7 @@ No popups, just immediately switches to the related file.
 
 The plugin does not create any key bindings automatically, it's up to you to add them.
 
-## Commands:
+## Commands
 ### open_related_rails_model
 Opens the related model from a controller or a view.
 If you put the cursor inside a model's name (like Po|st) and run the command, it will open the model from any place in the application.
