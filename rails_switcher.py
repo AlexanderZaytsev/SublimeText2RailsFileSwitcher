@@ -115,11 +115,38 @@ class RailsViewSwitcher(RailsFileSwitcher):
 
     return action
 
+
 class RailsControllerSwitcher(RailsFileSwitcher):
+  def run(self):
+    if self.is_rails_app():
+      controller_action = self.controller_action()
+
+      self.window.open_file(self.file_path())
+
+      if controller_action:
+        if self.window.active_view().is_loading():
+          sublime.set_timeout(lambda: self.run(), 50)
+        else:
+          self.scroll_to_controller_action(controller_action)
+    else:
+      print "Not a Rails application"
+
   def file_path(self):
     file_name = Inflector().pluralize(self.opened_resource_name()) + "_controller.rb"
-
     return os.path.join(self.rails_root_path, self.CONTROLLERS_DIR, file_name)
+
+  def controller_action(self):
+    plural_controller_name = Inflector().pluralize(self.opened_resource_name())
+    regex = re.compile('.*/app/views/'+plural_controller_name+'/([^\.]+).*')
+    return regex.findall(self.opened_file)[0]
+
+  def scroll_to_controller_action(self, controller_action):
+    action_definition_region = view.find('def ' + controller_action, 0)
+    if action_definition_region:
+      view.sel().clear()
+      view.sel().add(action_definition_region)
+      view.run_command('exit_visual_mode')
+      view.show_at_center(action_definition_region)
 
 class OpenRelatedRailsModelCommand(sublime_plugin.WindowCommand):
   def run(self):
