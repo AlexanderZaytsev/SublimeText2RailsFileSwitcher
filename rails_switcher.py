@@ -32,7 +32,7 @@ class RailsFileSwitcher(object):
 
   def opened_resource_name(self):
     if self.opened_resource_type() == 'view':
-      regex = re.compile('.*/app/views/(.+)/.*')
+      regex = re.compile('app/views/(.+)/')
       return Inflector().singularize(regex.findall(self.opened_file)[0])
     elif self.opened_resource_type() == 'controller':
       return Inflector().singularize(self.base_file_name(self.opened_file).replace('_controller', ''))
@@ -62,10 +62,10 @@ class RailsFileSwitcher(object):
   def base_file_name(self, file_path):
     return os.path.splitext(os.path.basename(file_path))[0]
 
+class RailsModelSwitcher(RailsFileSwitcher):
   def run(self):
     self.open_file(self.file_path())
 
-class RailsModelSwitcher(RailsFileSwitcher):
   def file_path(self):
     view = self.window.active_view()
     selection = view.substr(view.word(view.sel()[0]))
@@ -80,10 +80,16 @@ class RailsModelSwitcher(RailsFileSwitcher):
     return os.path.join(self.rails_root_path, self.MODELS_DIR, file_name)
 
 class RailsViewSwitcher(RailsFileSwitcher):
+  def run(self):
+    if not self.opened_resource_is_controller():
+      raise Exception('This command can be run from a controller only')
+
+    self.open_file(self.file_path())
+
   def file_path(self):
     file_path = None
 
-    if not self.opened_resource_is_controller() or self.controller_action() == None:
+    if self.controller_action() == None:
       return None
 
     # posts
