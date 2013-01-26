@@ -132,7 +132,7 @@ class RailsControllerSwitcher(RailsFileSwitcher):
 
   def controller_action(self):
     plural_controller_name = Inflector().pluralize(self.opened_resource_name())
-    regex = re.compile('.*/app/views/'+plural_controller_name+'/([^\.]+).*')
+    regex = re.compile('app/views/'+plural_controller_name+'/([^\.]+)')
     match = regex.findall(self.opened_file)
     if match:
       return match[0]
