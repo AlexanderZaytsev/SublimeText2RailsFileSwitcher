@@ -52,11 +52,11 @@ class RailsFileSwitcher(object):
 
   def open_file(self, file_path):
     if file_path is None:
-      print "Could not find related file"
+      print 'Could not find related file'
     elif os.path.exists(file_path):
       self.window.open_file(file_path)
     else:
-      print file_path + " not found"
+      print file_path + ' not found'
       return False
 
   def base_file_name(self, file_path):
@@ -76,7 +76,7 @@ class RailsModelSwitcher(RailsFileSwitcher):
     else:
       model_name = self.opened_resource_name()
 
-    file_name = model_name + ".rb"
+    file_name = model_name + '.rb'
     return os.path.join(self.rails_root_path, self.MODELS_DIR, file_name)
 
 class RailsViewSwitcher(RailsFileSwitcher):
@@ -101,7 +101,7 @@ class RailsViewSwitcher(RailsFileSwitcher):
     full_path_without_extension = os.path.join(self.rails_root_path, self.VIEWS_DIR, file_name_without_extension)
 
     # Using glob to support different extensions, like .erb, .haml, etc
-    views_list = glob.glob(full_path_without_extension + ".*")
+    views_list = glob.glob(full_path_without_extension + '.*')
 
     if views_list:
       file_path = os.path.join(self.rails_root_path, self.VIEWS_DIR, views_list.pop())
@@ -133,7 +133,7 @@ class RailsControllerSwitcher(RailsFileSwitcher):
         self.scroll_to_controller_action(controller_action)
 
   def file_path(self):
-    file_name = Inflector().pluralize(self.opened_resource_name()) + "_controller.rb"
+    file_name = Inflector().pluralize(self.opened_resource_name()) + '_controller.rb'
     return os.path.join(self.rails_root_path, self.CONTROLLERS_DIR, file_name)
 
   def controller_action(self):
