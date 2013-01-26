@@ -12,7 +12,7 @@ class RailsFileSwitcher(object):
     self.rails_root_path = self.rails_root_path()
 
     if not self.is_rails_app():
-      raise Exception('spam', 'eggs')
+      raise Exception('Not a Rails application')
 
   def is_rails_app(self):
     return True if self.rails_root_path else False
