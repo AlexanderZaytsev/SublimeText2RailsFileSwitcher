@@ -11,6 +11,9 @@ class RailsFileSwitcher(object):
     self.opened_file = self.window.active_view().file_name()
     self.rails_root_path = self.rails_root_path()
 
+    if not self.is_rails_app():
+      raise Exception('spam', 'eggs')
+
   def is_rails_app(self):
     return True if self.rails_root_path else False
 
@@ -60,10 +63,7 @@ class RailsFileSwitcher(object):
     return os.path.splitext(os.path.basename(file_path))[0]
 
   def run(self):
-    if self.is_rails_app():
-      self.open_file(self.file_path())
-    else:
-      print "Not a Rails application"
+    self.open_file(self.file_path())
 
 class RailsModelSwitcher(RailsFileSwitcher):
   def file_path(self):
@@ -83,8 +83,7 @@ class RailsViewSwitcher(RailsFileSwitcher):
   def file_path(self):
     file_path = None
 
-    if self.opened_resource_is_controller() == False:
-      print "Not a controller"
+    if not self.opened_resource_is_controller() or self.controller_action() == None:
       return None
 
     # posts
@@ -101,7 +100,6 @@ class RailsViewSwitcher(RailsFileSwitcher):
     if views_list:
       file_path = os.path.join(self.rails_root_path, self.VIEWS_DIR, views_list.pop())
 
-    print full_path_without_extension
     return file_path
 
   def controller_action(self):
@@ -118,18 +116,15 @@ class RailsViewSwitcher(RailsFileSwitcher):
 
 class RailsControllerSwitcher(RailsFileSwitcher):
   def run(self):
-    if self.is_rails_app():
-      controller_action = self.controller_action()
+    controller_action = self.controller_action()
 
-      self.window.open_file(self.file_path())
+    self.window.open_file(self.file_path())
 
-      if controller_action:
-        if self.window.active_view().is_loading():
-          sublime.set_timeout(lambda: self.run(), 50)
-        else:
-          self.scroll_to_controller_action(controller_action)
-    else:
-      print "Not a Rails application"
+    if controller_action:
+      if self.window.active_view().is_loading():
+        sublime.set_timeout(lambda: self.run(), 100)
+      else:
+        self.scroll_to_controller_action(controller_action)
 
   def file_path(self):
     file_name = Inflector().pluralize(self.opened_resource_name()) + "_controller.rb"
@@ -138,15 +133,27 @@ class RailsControllerSwitcher(RailsFileSwitcher):
   def controller_action(self):
     plural_controller_name = Inflector().pluralize(self.opened_resource_name())
     regex = re.compile('.*/app/views/'+plural_controller_name+'/([^\.]+).*')
-    return regex.findall(self.opened_file)[0]
+    match = regex.findall(self.opened_file)
+    if match:
+      return match[0]
 
   def scroll_to_controller_action(self, controller_action):
+    view = self.window.active_view()
     action_definition_region = view.find('def ' + controller_action, 0)
+
     if action_definition_region:
-      view.sel().clear()
-      view.sel().add(action_definition_region)
-      view.run_command('exit_visual_mode')
       view.show_at_center(action_definition_region)
+
+      # If Vintage is enabled, we will move the caret to the action definition
+      if view.get_status('mode'):
+        view.sel().clear()
+
+        # We need to do it this way because otherwise sometimes
+        # the caret position is not updated
+        view.run_command('enter_visual_mode')
+        view.sel().add(action_definition_region)
+        view.run_command('exit_visual_mode')
+
 
 class OpenRelatedRailsModelCommand(sublime_plugin.WindowCommand):
   def run(self):
