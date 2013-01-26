@@ -33,6 +33,9 @@ This is the alpha version, if something is not working, create an issue.
 
 ## CHANGELOG
 
+### January 26, 2013
+- When switching from a view to the controller the screen is centered at the action definition. If Vintage is enabled, it also moves the caret to the action definition.
+
 ### January 21, 2013
 - Allow switching to model by putting the cursor (and running `open_related_rails_model`) inside its name anywhere in the application.
 
