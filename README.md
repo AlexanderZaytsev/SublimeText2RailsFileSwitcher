@@ -7,14 +7,15 @@ The plugin does not create any key bindings automatically, it's up to you to add
 
 ## Commands
 ### open_related_rails_model
-Opens the related model from a controller or a view.
-If you put the cursor inside a model's name (like Po|st) and run the command, it will open the model from any place in the application.
+- Opens the related model from a controller or a view.
+- If you put the cursor inside a model's name (like Po│st) and run the command, it will open the model from any place in the application.
 
 ### open_related_rails_controller
-Opens the related controller from a model or a view.
+- Opens the related controller from a model.
+- Opens the related controller from a view. Centers the screen at the action definition. If Vintage is enabled, it also moves the caret to the action definition.
 
 ### open_related_rails_view
-Opens the related view from a controller. You need to put the cursor inside the controller action for it to work.
+- Opens the related view from a controller. You need to put the cursor inside the controller action for it to work.
 
 ## Bindings
 Here's how you can bind them to keys (Go to `Preferences > Key Bindings - User`)
@@ -29,7 +30,7 @@ Here's how you can bind them to keys (Go to `Preferences > Key Bindings - User`)
 
 `Rails File Switcher` switches between MVC files instantly. If you are in your User model and you press ⌘+2 (if that's your binding), you will instantly see UsersController.
 
-This is the alpha version, if something is not working, create an issue.
+This is the alpha version, if something is not working, please, create an issue.
 
 ## CHANGELOG
 
