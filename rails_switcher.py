@@ -32,12 +32,17 @@ class RailsFileSwitcher(object):
 
   def opened_resource_name(self):
     if self.opened_resource_type() == 'view':
-      regex = re.compile('app/views/(.+)/')
-      return Inflector().singularize(regex.findall(self.opened_file)[0])
+      match = re.search('app/views/(.+)/', self.opened_file)
+      if match:
+        return Inflector().singularize(match.group(1))
     elif self.opened_resource_type() == 'controller':
-      return Inflector().singularize(self.base_file_name(self.opened_file).replace('_controller', ''))
+      match = re.search('app/controllers/(.+)_controller\.rb', self.opened_file)
+      if match:
+        return Inflector().singularize(match.group(1))
     elif self.opened_resource_type() == 'model':
-      return self.base_file_name(self.opened_file)
+      match = re.search('app/models/(.+)\.rb', self.opened_file)
+      if match:
+        return match.group(1)
     else:
       return None
 
