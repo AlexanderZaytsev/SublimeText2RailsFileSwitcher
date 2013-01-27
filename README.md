@@ -34,6 +34,9 @@ This is the alpha version, if something is not working, please, create an issue.
 
 ## CHANGELOG
 
+### January 27, 2013
+- Add support for namespaces.
+
 ### January 26, 2013
 - When switching from a view to the controller the screen is centered at the action definition. If Vintage is enabled, it also moves the caret to the action definition.
 
