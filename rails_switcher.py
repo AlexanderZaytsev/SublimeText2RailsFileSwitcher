@@ -64,9 +64,6 @@ class RailsFileSwitcher(object):
       print file_path + ' not found'
       return False
 
-  def base_file_name(self, file_path):
-    return os.path.splitext(os.path.basename(file_path))[0]
-
 class RailsModelSwitcher(RailsFileSwitcher):
   def run(self):
     self.open_file(self.file_path())
