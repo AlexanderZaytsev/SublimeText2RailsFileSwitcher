@@ -8,7 +8,7 @@ class RailsFileSwitcher(object):
 
   def __init__(self, window, target_resource_name = None):
     self.window = window
-    self.opened_file = self.window.active_view().file_name()
+    self.opened_file_name = self.window.active_view().file_name()
     self.rails_root_path = self.rails_root_path()
 
     if not self.is_rails_app():
@@ -18,29 +18,29 @@ class RailsFileSwitcher(object):
     return True if self.rails_root_path else False
 
   def opened_resource_is_controller(self):
-    return self.CONTROLLERS_DIR in self.opened_file
+    return self.CONTROLLERS_DIR in self.opened_file_name
 
   def opened_resource_type(self):
-    if self.VIEWS_DIR in self.opened_file:
+    if self.VIEWS_DIR in self.opened_file_name:
       return 'view'
-    elif self.MODELS_DIR in self.opened_file:
+    elif self.MODELS_DIR in self.opened_file_name:
       return 'model'
-    elif self.CONTROLLERS_DIR in self.opened_file:
+    elif self.CONTROLLERS_DIR in self.opened_file_name:
       return 'controller'
     else:
       return None
 
   def opened_resource_name(self):
     if self.opened_resource_type() == 'view':
-      match = re.search('app/views/(.+)/', self.opened_file)
+      match = re.search('app/views/(.+)/', self.opened_file_name)
       if match:
         return Inflector().singularize(match.group(1))
     elif self.opened_resource_type() == 'controller':
-      match = re.search('app/controllers/(.+)_controller\.rb', self.opened_file)
+      match = re.search('app/controllers/(.+)_controller\.rb', self.opened_file_name)
       if match:
         return Inflector().singularize(match.group(1))
     elif self.opened_resource_type() == 'model':
-      match = re.search('app/models/(.+)\.rb', self.opened_file)
+      match = re.search('app/models/(.+)\.rb', self.opened_file_name)
       if match:
         return match.group(1)
     else:
@@ -50,7 +50,7 @@ class RailsFileSwitcher(object):
     directories = self.window.folders()
 
     for directory in directories:
-      if directory in self.opened_file and os.path.exists(os.path.join(directory, 'Rakefile')):
+      if directory in self.opened_file_name and os.path.exists(os.path.join(directory, 'Rakefile')):
         return os.path.abspath(directory)
 
     return None
@@ -144,7 +144,7 @@ class RailsControllerSwitcher(RailsFileSwitcher):
   def controller_action(self):
     plural_controller_name = Inflector().pluralize(self.opened_resource_name())
     regex = re.compile('app/views/'+plural_controller_name+'/([^\.]+)')
-    match = regex.findall(self.opened_file)
+    match = regex.findall(self.opened_file_name)
     if match:
       return match[0]
 
