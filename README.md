@@ -48,7 +48,7 @@ Pull requests are appreciated. If something isn't working, you can fix and send 
 ### January 18, 2013
 - Make it work when there are multiple apps opened in the side bar (previously would look for files only in the first app). Thanks to @ccodre for pointing out.
 
-### Dec 25, 2012
+### December 25, 2012
 - Initial release
 
 ## License
