@@ -3,22 +3,20 @@ Rails File Switcher is a plugin for Sublime Text 2 that allows you to switch bet
 
 No popups, just immediately switches to the related file.
 
-The plugin does not create any key bindings automatically, it's up to you to add them.
-
 ## Commands
-### open_related_rails_model
+### open_related_rails_model (super+1)
 - Opens the related model from a controller or a view.
 - If you put the cursor inside a model's name (like Po│st) and run the command, it will open the model from any place in the application.
 
-### open_related_rails_controller
+### open_related_rails_controller (super+2)
 - Opens the related controller from a model.
 - Opens the related controller from a view. Centers the screen at the action definition. If Vintage is enabled, it also moves the caret to the action definition.
 
-### open_related_rails_view
+### open_related_rails_view (super+3)
 - Opens the related view from a controller. You need to put the cursor inside the controller action for it to work.
 
 ## Bindings
-Here's how you can bind them to keys (Go to `Preferences > Key Bindings - User`)
+Here are the default bindings. You can change them in `Preferences > Key Bindings - User`
 ```json
 { "keys": ["super+1"], "command": "open_related_rails_model" },
 { "keys": ["super+2"], "command": "open_related_rails_controller" },
@@ -30,9 +28,13 @@ Here's how you can bind them to keys (Go to `Preferences > Key Bindings - User`)
 
 `Rails File Switcher` switches between MVC files instantly. If you are in your User model and you press ⌘+2 (if that's your binding), you will instantly see UsersController.
 
-This is the alpha version, if something is not working, please, create an issue.
+## Contributing
+Pull requests are appreciated, if something isn't working, you can fix and send a pull request or at simply create an issue to let me know of the bugs.
 
 ## CHANGELOG
+
+### March 7, 2013
+- Include key bindings by default (by @deiga).
 
 ### January 27, 2013
 - Add support for namespaces.
