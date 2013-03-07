@@ -29,7 +29,7 @@ Here are the default bindings. You can change them in `Preferences > Key Binding
 `Rails File Switcher` switches between MVC files instantly. If you are in your User model and you press ⌘+2 (if that's your binding), you will instantly see UsersController.
 
 ## Contributing
-Pull requests are appreciated, if something isn't working, you can fix and send a pull request or at simply create an issue to let me know of the bugs.
+Pull requests are appreciated. If something isn't working, you can fix and send a pull request or simply create an issue to let me know of the bugs.
 
 ## CHANGELOG
 
