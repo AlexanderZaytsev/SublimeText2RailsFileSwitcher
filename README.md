@@ -13,7 +13,7 @@ No popups, just immediately switches to the related file.
 - Opens the related controller from a view. Centers the screen at the action definition. If Vintage is enabled, it also moves the caret to the action definition.
 
 ### open_related_rails_view (super+3)
-- Opens the related view from a controller. You need to put the cursor inside the controller action for it to work.
+- Opens the related view from a controller. You need to put the cursor inside the controller action for it to work. If the view does not exist, you will be offered to create it.
 
 ## Bindings
 Here are the default bindings. You can change them in `Preferences > Key Bindings - User`
@@ -32,6 +32,9 @@ Here are the default bindings. You can change them in `Preferences > Key Binding
 Pull requests are appreciated. If something isn't working, you can fix and send a pull request or simply create an issue to let me know of the bugs.
 
 ## CHANGELOG
+
+### March 14, 2013
+- Allow creating views when switching to a non-existent view.
 
 ### March 7, 2013
 - Include key bindings by default (by @deiga).

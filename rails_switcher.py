@@ -86,7 +86,11 @@ class RailsViewSwitcher(RailsFileSwitcher):
     if not self.opened_resource_is_controller():
       raise Exception('This command can be run from a controller only')
 
-    self.open_file(self.file_path())
+    file_path = self.file_path()
+    if os.path.exists(file_path):
+      self.open_file(file_path)
+    else:
+      self.show_create_view_file_input_panel(file_path)
 
   def file_path(self):
     file_path = None
@@ -106,7 +110,13 @@ class RailsViewSwitcher(RailsFileSwitcher):
     views_list = glob.glob(full_path_without_extension + '.*')
 
     if views_list:
-      file_path = os.path.join(self.rails_root_path, self.VIEWS_DIR, views_list.pop())
+      # Views exist, choose the first one
+
+      # Using pop(0) to prefer `html` to `js` and `json`
+      file_path = os.path.join(self.rails_root_path, self.VIEWS_DIR, views_list.pop(0))
+    else:
+      # No view exists, we need to know what to name it if the user decides to create it
+      file_path = full_path_without_extension + '.html.' + self.views_extension()
 
     return file_path
 
@@ -120,6 +130,27 @@ class RailsViewSwitcher(RailsFileSwitcher):
         action = view.substr(action_definition_region).replace('  def ', '')
 
     return action
+
+  def show_create_view_file_input_panel(self, file_path):
+    relative_file_path = self.file_path().replace(self.rails_root_path + '/', '')
+    self.window.show_input_panel('The view does not exist. Press Enter to create it:', relative_file_path, self.create_view_file, None, None)
+
+  def create_view_file(self, relative_file_path):
+    view_file_path = os.path.join(self.rails_root_path, relative_file_path)
+
+    view_file = open(view_file_path, 'w')
+    view_file.write('')
+    view_file.close()
+    self.window.open_file(view_file_path)
+
+  def views_extension(self):
+    # Using layouts to determine view extensions.
+    layouts_dir = os.path.join(self.rails_root_path, self.VIEWS_DIR, 'layouts/*')
+    layouts_list = glob.glob(layouts_dir)
+    layout_file_name = layouts_list.pop()
+
+    extension = layout_file_name.split('.').pop()
+    return extension
 
 
 class RailsControllerSwitcher(RailsFileSwitcher):
