@@ -3,7 +3,7 @@
 # bermi a-t bermilabs - com
 # See the end of this file for the free software, open source license (BSD-style).
 
-from languages.english import English
+from .languages.english import English
 
 class Inflector(object):
     """
@@ -15,15 +15,15 @@ class Inflector(object):
 
     def __init__( self, Inflector = English ) :
         assert callable(Inflector), "Inflector should be a callable obj"
-        self.Inflector = apply(Inflector);
+        self.Inflector = Inflector;
 
     def pluralize(self, word) :
         '''Pluralizes nouns.'''
-        return self.Inflector.pluralize(word)
+        return self.Inflector.pluralize(self, word)
 
     def singularize(self, word) :
         '''Singularizes nouns.'''
-        return self.Inflector.singularize(word)
+        return self.Inflector.singularize(self, word)
 
     def conditionalPlural(self, numer_of_records, word) :
         '''Returns the plural form of a word if first parameter is greater than 1'''
