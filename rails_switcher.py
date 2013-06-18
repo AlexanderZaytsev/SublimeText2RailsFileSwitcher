@@ -1,5 +1,5 @@
 import sublime, sublime_plugin, os, glob, re
-from lib.inflector import *
+from .lib.inflector import *
 
 class RailsFileSwitcher(object):
   VIEWS_DIR = os.path.join('app', 'views')
@@ -57,11 +57,11 @@ class RailsFileSwitcher(object):
 
   def open_file(self, file_path):
     if file_path is None:
-      print 'Could not find related file'
+      print('Could not find related file')
     elif os.path.exists(file_path):
       self.window.open_file(file_path)
     else:
-      print file_path + ' not found'
+      print(file_path + ' not found')
       return False
 
 class RailsModelSwitcher(RailsFileSwitcher):
@@ -158,7 +158,7 @@ class RailsControllerSwitcher(RailsFileSwitcher):
     controller_action = self.controller_action()
 
     self.window.open_file(self.file_path())
-
+    
     if controller_action:
       if self.window.active_view().is_loading():
         sublime.set_timeout(lambda: self.run(), 100)
