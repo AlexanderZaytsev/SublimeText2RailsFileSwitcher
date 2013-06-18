@@ -33,6 +33,9 @@ Pull requests are appreciated. If something isn't working, you can fix and send 
 
 ## CHANGELOG
 
+### June 18, 2013
+- Add support for ST3, use branch `python3` (by @dsnipe)
+
 ### March 14, 2013
 - Allow creating views when switching to a non-existent view.
 
