@@ -21,6 +21,8 @@ Here are the default bindings. You can change them in `Preferences > Key Binding
 { "keys": ["super+1"], "command": "open_related_rails_model" },
 { "keys": ["super+2"], "command": "open_related_rails_controller" },
 { "keys": ["super+3"], "command": "open_related_rails_view" },
+{ "keys": ["super+4"], "command": "open_related_rspec_model" },
+{ "keys": ["super+5"], "command": "open_related_rspec_controller" },
 ```
 
 ## How is it different from [Rails Related Files](https://github.com/luqman/SublimeText2RailsRelatedFiles) and other similar plugins?
@@ -36,6 +38,8 @@ Pull requests are appreciated. If something isn't working, you can fix and send 
 ### June 24, 2013
 - Add support for singularly-named controllers.
 - Add support for jumping from a namespaced controller to a non-namespaced model.
+- Add support for RSpec models and controllers.
+- Show file creation popup for all types when the file doesn't exist, not only for views.
 
 ### June 18, 2013
 - Add support for ST3, use branch `python3` (by @dsnipe)
