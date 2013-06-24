@@ -142,7 +142,7 @@ class RailsViewSwitcher(RailsFileSwitcher):
 
   def views_extension(self):
     # Using layouts to determine view extensions.
-    layouts_dir = os.path.join(self.rails_root_path, self.VIEWS_DIR, 'layouts/*')
+    layouts_dir = os.path.join(self.rails_root_path, self.VIEWS_DIR, 'layouts/*.*')
     layouts_list = glob.glob(layouts_dir)
     layout_file_name = layouts_list.pop()
 
@@ -189,7 +189,6 @@ class RailsControllerSwitcher(RailsFileSwitcher):
         view.run_command('enter_visual_mode')
         view.sel().add(action_definition_region)
         view.run_command('exit_visual_mode')
-
 
 class OpenRelatedRailsModelCommand(sublime_plugin.WindowCommand):
   def run(self):
