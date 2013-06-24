@@ -128,8 +128,6 @@ class RspecModelSwitcher(RailsFileSwitcher):
       # We need to pluralize first, then singularize, because otherwise words like 'Address' get singularized into 'Addres'
       model_name = Inflector().singularize(Inflector().pluralize(self.opened_resource_name_without_namespace()))
 
-    print self.opened_resource_name_without_namespace()
-    print model_name
     file_name = model_name + '_spec.rb'
     return os.path.join(self.rails_root_path, self.RSPEC_MODELS_DIR, file_name)
 
