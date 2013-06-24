@@ -33,6 +33,10 @@ Pull requests are appreciated. If something isn't working, you can fix and send 
 
 ## CHANGELOG
 
+### June 24, 2013
+- Add support for singularly-named controllers.
+- Add support for jumping from a namespaced controller to a non-namespaced model.
+
 ### June 18, 2013
 - Add support for ST3, use branch `python3` (by @dsnipe)
 
