@@ -5,6 +5,8 @@ class RailsFileSwitcher(object):
   VIEWS_DIR = os.path.join('app', 'views')
   CONTROLLERS_DIR = os.path.join('app', 'controllers')
   MODELS_DIR = os.path.join('app', 'models')
+  RSPEC_MODELS_DIR = os.path.join('spec', 'models')
+  RSPEC_CONTROLLERS_DIR = os.path.join('spec', 'controllers')
 
   def __init__(self, window, target_resource_name = None):
     self.window = window
@@ -27,6 +29,10 @@ class RailsFileSwitcher(object):
       return 'model'
     elif self.CONTROLLERS_DIR in self.opened_file_name:
       return 'controller'
+    elif self.RSPEC_MODELS_DIR in self.opened_file_name:
+      return 'rspec_model'
+    elif self.RSPEC_CONTROLLERS_DIR in self.opened_file_name:
+      return 'rspec_controller'
     else:
       return None
 
@@ -41,6 +47,14 @@ class RailsFileSwitcher(object):
         return match.group(1)
     elif self.opened_resource_type() == 'model':
       match = re.search('app/models/(.+)\.rb', self.opened_file_name.replace('\\', '/'))
+      if match:
+        return match.group(1)
+    elif self.opened_resource_type() == 'rspec_controller':
+      match = re.search('spec/controllers/(.+)_controller_spec\.rb', self.opened_file_name.replace('\\', '/'))
+      if match:
+        return match.group(1)
+    elif self.opened_resource_type() == 'rspec_model':
+      match = re.search('spec/models/(.+)_spec\.rb', self.opened_file_name.replace('\\', '/'))
       if match:
         return match.group(1)
     else:
@@ -66,7 +80,20 @@ class RailsFileSwitcher(object):
       self.window.open_file(file_path)
     else:
       print file_path + ' not found'
+      self.show_create_file_input_panel(file_path)
       return False
+
+  def show_create_file_input_panel(self, file_path):
+    relative_file_path = self.file_path().replace(self.rails_root_path + '/', '')
+    self.window.show_input_panel('The file does not exist. Press Enter to create it:', relative_file_path, self.create_file, None, None)
+
+  def create_file(self, relative_file_path):
+    view_file_path = os.path.join(self.rails_root_path, relative_file_path)
+
+    view_file = open(view_file_path, 'w')
+    view_file.write('')
+    view_file.close()
+    self.window.open_file(view_file_path)
 
 class RailsModelSwitcher(RailsFileSwitcher):
   def run(self):
@@ -80,21 +107,38 @@ class RailsModelSwitcher(RailsFileSwitcher):
     if selection != '' and selection[0].isupper():
       model_name = Inflector().underscore(selection)
     else:
-      model_name = Inflector().singularize(self.opened_resource_name_without_namespace())
+      # We need to pluralize first, then singularize, because otherwise words like 'Address' get singularized into 'Addres'
+      model_name = Inflector().singularize(Inflector().pluralize(self.opened_resource_name_without_namespace()))
 
     file_name = model_name + '.rb'
     return os.path.join(self.rails_root_path, self.MODELS_DIR, file_name)
+
+class RspecModelSwitcher(RailsFileSwitcher):
+  def run(self):
+    self.open_file(self.file_path())
+
+  def file_path(self):
+    view = self.window.active_view()
+    selection = view.substr(view.word(view.sel()[0]))
+
+    # Check if current selection is uppercased (Post, etc)
+    if selection != '' and selection[0].isupper():
+      model_name = Inflector().underscore(selection)
+    else:
+      # We need to pluralize first, then singularize, because otherwise words like 'Address' get singularized into 'Addres'
+      model_name = Inflector().singularize(Inflector().pluralize(self.opened_resource_name_without_namespace()))
+
+    print self.opened_resource_name_without_namespace()
+    print model_name
+    file_name = model_name + '_spec.rb'
+    return os.path.join(self.rails_root_path, self.RSPEC_MODELS_DIR, file_name)
 
 class RailsViewSwitcher(RailsFileSwitcher):
   def run(self):
     if not self.opened_resource_is_controller():
       raise Exception('This command can be run from a controller only')
 
-    file_path = self.file_path()
-    if os.path.exists(file_path):
-      self.open_file(file_path)
-    else:
-      self.show_create_view_file_input_panel(file_path)
+    self.open_file(self.file_path())
 
   def file_path(self):
     file_path = None
@@ -132,18 +176,6 @@ class RailsViewSwitcher(RailsFileSwitcher):
 
     return action
 
-  def show_create_view_file_input_panel(self, file_path):
-    relative_file_path = self.file_path().replace(self.rails_root_path + '/', '')
-    self.window.show_input_panel('The view does not exist. Press Enter to create it:', relative_file_path, self.create_view_file, None, None)
-
-  def create_view_file(self, relative_file_path):
-    view_file_path = os.path.join(self.rails_root_path, relative_file_path)
-
-    view_file = open(view_file_path, 'w')
-    view_file.write('')
-    view_file.close()
-    self.window.open_file(view_file_path)
-
   def views_extension(self):
     # Using layouts to determine view extensions.
     layouts_dir = os.path.join(self.rails_root_path, self.VIEWS_DIR, 'layouts/*.*')
@@ -152,7 +184,6 @@ class RailsViewSwitcher(RailsFileSwitcher):
 
     extension = layout_file_name.split('.').pop()
     return extension
-
 
 class RailsControllerSwitcher(RailsFileSwitcher):
   def run(self):
@@ -194,6 +225,14 @@ class RailsControllerSwitcher(RailsFileSwitcher):
         view.sel().add(action_definition_region)
         view.run_command('exit_visual_mode')
 
+class RspecControllerSwitcher(RailsFileSwitcher):
+  def run(self):
+    self.window.open_file(self.file_path())
+
+  def file_path(self):
+    file_name = Inflector().pluralize(self.opened_resource_name()) + '_controller_spec.rb'
+    return os.path.join(self.rails_root_path, self.RSPEC_CONTROLLERS_DIR, file_name)
+
 class OpenRelatedRailsModelCommand(sublime_plugin.WindowCommand):
   def run(self):
     RailsModelSwitcher(sublime.active_window()).run()
@@ -205,3 +244,11 @@ class OpenRelatedRailsViewCommand(sublime_plugin.WindowCommand):
 class OpenRelatedRailsControllerCommand(sublime_plugin.WindowCommand):
   def run(self):
     RailsControllerSwitcher(sublime.active_window()).run()
+
+class OpenRelatedRspecModelCommand(sublime_plugin.WindowCommand):
+  def run(self):
+    RspecModelSwitcher(sublime.active_window()).run()
+
+class OpenRelatedRspecControllerCommand(sublime_plugin.WindowCommand):
+  def run(self):
+    RspecControllerSwitcher(sublime.active_window()).run()
