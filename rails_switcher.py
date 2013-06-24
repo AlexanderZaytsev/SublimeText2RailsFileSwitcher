@@ -149,7 +149,6 @@ class RailsViewSwitcher(RailsFileSwitcher):
     extension = layout_file_name.split('.').pop()
     return extension
 
-
 class RailsControllerSwitcher(RailsFileSwitcher):
   def run(self):
     controller_action = self.controller_action()
