@@ -34,11 +34,11 @@ class RailsFileSwitcher(object):
     if self.opened_resource_type() == 'view':
       match = re.search('app/views/(.+)/', self.opened_file_name.replace('\\', '/'))
       if match:
-        return Inflector().singularize(match.group(1))
+        return match.group(1)
     elif self.opened_resource_type() == 'controller':
       match = re.search('app/controllers/(.+)_controller\.rb', self.opened_file_name.replace('\\', '/'))
       if match:
-        return Inflector().singularize(match.group(1))
+        return match.group(1)
     elif self.opened_resource_type() == 'model':
       match = re.search('app/models/(.+)\.rb', self.opened_file_name.replace('\\', '/'))
       if match:
@@ -76,7 +76,7 @@ class RailsModelSwitcher(RailsFileSwitcher):
     if selection != '' and selection[0].isupper():
       model_name = Inflector().underscore(selection)
     else:
-      model_name = self.opened_resource_name()
+      model_name = Inflector().singularize(self.opened_resource_name())
 
     file_name = model_name + '.rb'
     return os.path.join(self.rails_root_path, self.MODELS_DIR, file_name)
@@ -98,11 +98,8 @@ class RailsViewSwitcher(RailsFileSwitcher):
     if self.controller_action() == None:
       return None
 
-    # posts
-    plural_resource_name = Inflector().pluralize(self.opened_resource_name())
-
     # posts/index
-    file_name_without_extension = os.path.join(plural_resource_name, self.controller_action())
+    file_name_without_extension = os.path.join(self.opened_resource_name(), self.controller_action())
 
     full_path_without_extension = os.path.join(self.rails_root_path, self.VIEWS_DIR, file_name_without_extension)
 
@@ -166,7 +163,7 @@ class RailsControllerSwitcher(RailsFileSwitcher):
         self.scroll_to_controller_action(controller_action)
 
   def file_path(self):
-    file_name = Inflector().pluralize(self.opened_resource_name()) + '_controller.rb'
+    file_name = self.opened_resource_name() + '_controller.rb'
     return os.path.join(self.rails_root_path, self.CONTROLLERS_DIR, file_name)
 
   def controller_action(self):
