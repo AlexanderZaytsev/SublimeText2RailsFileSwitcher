@@ -46,6 +46,10 @@ class RailsFileSwitcher(object):
     else:
       return None
 
+  def opened_resource_name_without_namespace(self):
+    return re.split('/|::', self.opened_resource_name()).pop()
+
+
   def rails_root_path(self):
     directories = self.window.folders()
 
@@ -76,7 +80,7 @@ class RailsModelSwitcher(RailsFileSwitcher):
     if selection != '' and selection[0].isupper():
       model_name = Inflector().underscore(selection)
     else:
-      model_name = Inflector().singularize(self.opened_resource_name())
+      model_name = Inflector().singularize(self.opened_resource_name_without_namespace())
 
     file_name = model_name + '.rb'
     return os.path.join(self.rails_root_path, self.MODELS_DIR, file_name)
@@ -149,6 +153,7 @@ class RailsViewSwitcher(RailsFileSwitcher):
     extension = layout_file_name.split('.').pop()
     return extension
 
+
 class RailsControllerSwitcher(RailsFileSwitcher):
   def run(self):
     controller_action = self.controller_action()
@@ -162,7 +167,7 @@ class RailsControllerSwitcher(RailsFileSwitcher):
         self.scroll_to_controller_action(controller_action)
 
   def file_path(self):
-    file_name = self.opened_resource_name() + '_controller.rb'
+    file_name = Inflector().pluralize(self.opened_resource_name()) + '_controller.rb'
     return os.path.join(self.rails_root_path, self.CONTROLLERS_DIR, file_name)
 
   def controller_action(self):
