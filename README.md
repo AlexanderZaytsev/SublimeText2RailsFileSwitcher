@@ -5,15 +5,22 @@ No popups, just immediately switches to the related file.
 
 ## Commands
 ### open_related_rails_model (super+1)
-- Opens the related model from a controller or a view.
+- Opens the related model.
 - If you put the cursor inside a model's name (like Po│st) and run the command, it will open the model from any place in the application.
 
 ### open_related_rails_controller (super+2)
-- Opens the related controller from a model.
+- Opens the related controller from a model and rspec model & controller specs.
 - Opens the related controller from a view. Centers the screen at the action definition. If Vintage is enabled, it also moves the caret to the action definition.
 
 ### open_related_rails_view (super+3)
-- Opens the related view from a controller. You need to put the cursor inside the controller action for it to work. If the view does not exist, you will be offered to create it.
+- Opens the related view from a controller. You need to put the cursor inside the controller action for it to work.
+
+### open_related_rspec_model (super+4)
+- Opens the related rspec model spec.
+- If you put the cursor inside a model's name (like Po│st) and run the command, it will open the model spec from any place in the application.
+
+### open_related_rspec_controller (super+5)
+- Opens the related rspec controller spec from a model and rspec model.
 
 ## Bindings
 Here are the default bindings. You can change them in `Preferences > Key Bindings - User`
