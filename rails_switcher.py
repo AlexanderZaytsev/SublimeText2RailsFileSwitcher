@@ -5,6 +5,8 @@ class RailsFileSwitcher(object):
   VIEWS_DIR = os.path.join('app', 'views')
   CONTROLLERS_DIR = os.path.join('app', 'controllers')
   MODELS_DIR = os.path.join('app', 'models')
+  SERVICES_DIR = os.path.join('app', 'services')
+  MAILERS_DIR = os.path.join('app', 'mailers')
   RSPEC_MODELS_DIR = os.path.join('spec', 'models')
   RSPEC_CONTROLLERS_DIR = os.path.join('spec', 'controllers')
 
@@ -111,7 +113,12 @@ class RailsModelSwitcher(RailsFileSwitcher):
       model_name = Inflector().singularize(Inflector().pluralize(self.opened_resource_name_without_namespace()))
 
     file_name = model_name + '.rb'
-    return os.path.join(self.rails_root_path, self.MODELS_DIR, file_name)
+    if re.search('_service.rb$', file_name):
+      return os.path.join(self.rails_root_path, self.SERVICES_DIR, file_name)
+    elif re.search('_mailer.rb$', file_name):
+      return os.path.join(self.rails_root_path, self.MAILERS_DIR, file_name)
+    else:
+      return os.path.join(self.rails_root_path, self.MODELS_DIR, file_name)
 
 class RspecModelSwitcher(RailsFileSwitcher):
   def run(self):

@@ -6,18 +6,18 @@ No popups, just immediately switches to the related file.
 ## Commands
 ### open_related_rails_model (super+1)
 - Opens the related model.
-- If you put the cursor inside a model's name (like Po│st) and run the command, it will open the model from any place in the application.
+- If you put the caret inside a model's name (like Po│st) and run the command, it will open the model from any place in the application. This works for models, services and mailers (examples: `Post`, `PostService`, `PostMailer`).
 
 ### open_related_rails_controller (super+2)
 - Opens the related controller from a model and rspec model & controller specs.
 - Opens the related controller from a view. Centers the screen at the action definition. If Vintage is enabled, it also moves the caret to the action definition.
 
 ### open_related_rails_view (super+3)
-- Opens the related view from a controller. You need to put the cursor inside the controller action for it to work.
+- Opens the related view from a controller. You need to put the caret inside the controller action for it to work.
 
 ### open_related_rspec_model (super+4)
 - Opens the related rspec model spec.
-- If you put the cursor inside a model's name (like Po│st) and run the command, it will open the model spec from any place in the application.
+- If you put the caret inside a model's name (like Po│st) and run the command, it will open the model spec from any place in the application.
 
 ### open_related_rspec_controller (super+5)
 - Opens the related rspec controller spec from a model and rspec model.
@@ -42,6 +42,9 @@ Pull requests are appreciated. If something isn't working, you can fix and send 
 
 ## CHANGELOG
 
+### July 2, 2013
+- Add support for `services` and `mailers`.
+
 ### June 24, 2013
 - Add support for singularly-named controllers.
 - Add support for jumping from a namespaced controller to a non-namespaced model.
@@ -64,7 +67,7 @@ Pull requests are appreciated. If something isn't working, you can fix and send 
 - When switching from a view to the controller the screen is centered at the action definition. If Vintage is enabled, it also moves the caret to the action definition.
 
 ### January 21, 2013
-- Allow switching to model by putting the cursor (and running `open_related_rails_model`) inside its name anywhere in the application.
+- Allow switching to model by putting the caret (and running `open_related_rails_model`) inside its name anywhere in the application.
 
 ### January 18, 2013
 - Make it work when there are multiple apps opened in the side bar (previously would look for files only in the first app). Thanks to @ccodre for pointing out.
